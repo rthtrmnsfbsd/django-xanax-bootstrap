@@ -1,0 +1,90 @@
+{% if is_admin_preview %}
+
+    {% load i18n %}
+    {% load xanax_tags %}
+    {% load url from future  %}
+    {% load admin_urls %}
+
+
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}xanax/bootstrap/css/bootstrap.css" />
+    <script src="{{ STATIC_URL }}xanax/bootstrap/js/bootstrap.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}xanax/css/preview.css" />
+
+    <div id="preview-header-back"></div>
+    <div id="preview-header" class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand admin-home" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
+                    <span class="prev-title">{% trans "Preview" %}</span>
+                </div>
+            </div>
+    </div>
+
+
+    <div id="preview-submit-row" class="well">
+        <form id="changelist-form" action="{{ preview_action }}" method="post">
+            {% csrf_token %}
+            {% preview_token %}
+
+            {% if show_edit_link %}<a href="../" class="preview-link btn btn-success">{% trans "Edit" %}</a>{% endif %}
+            {% if show_back_link %}<a href="../../" class="preview-link btn btn-inverse">{% trans 'Back' %}</a>{% endif %}
+            {% if show_delete_link %}<a href="{% if not is_post %}../{% endif %}delete/" class="preview-link btn btn-danger">{% trans "Delete" %}</a>{% endif %}
+
+            {% if show_save %}<input type="submit" value="{% trans 'Save' %}" class="default" name="_save" {{ onclick_attrib }}/>{% endif %}
+            {% if show_back %}<input type="submit" value="{% trans 'Back' %}" style="margin-right: 45px;float: left" class="default" name="_back" {{ onclick_attrib }}/>{% endif %}
+
+            {% if show_publish %}<input type="submit" value="{% trans 'Publish' %}" class="default" name="_publish" {{ onclick_attrib }}/>{% endif %}
+            {% if show_save_as_new %}<input type="submit" value="{% trans 'Save as new' %}" name="_saveasnew" {{ onclick_attrib }}/>{%endif%}
+            {% if show_save_and_add_another %}<input type="submit" value="{% trans 'Save and add another' %}" name="_addanother" {{ onclick_attrib }} />{% endif %}
+            {% if show_save_and_continue %}<input type="submit" value="{% trans 'Save and continue editing' %}" name="_continue" {{ onclick_attrib }}/>{% endif %}
+        </form>
+    </div>
+    <div id="preview-submit-row-back"></div>
+
+    <script>
+
+        $(document).ready(function(){
+
+            var preview_top_height =
+                    $('#preview-header').height()
+                            +parseInt($('#preview-header').css('padding-top').split('px')[0])
+                            +parseInt($('#preview-header').css('padding-bottom').split('px')[0]);
+
+            var preview_bottom_height =
+                    $('#preview-submit-row').height()
+                            +parseInt($('#preview-submit-row').css('padding-top').split('px')[0])
+                            +parseInt($('#preview-submit-row').css('padding-bottom').split('px')[0]);
+
+            $('body *:first').before($('#preview-header-back'));
+            $('body').append($('#preview-submit-row-back'));
+
+            $('#preview-submit-row-back').height(preview_bottom_height);
+            $('#preview-header-back').height(preview_top_height);
+
+            $('#preview-header-back').after($('#preview-header'));
+            $('#preview-submit-row-back').before($('#preview-submit-row'));
+            var body_bacground =  $('body').css('background-position');
+            $('body').css('background-position', body_bacground.split(' ')[0] + ' ' + preview_top_height + 'px');
+            $('*').each(function( index ) {
+                if ($(this).css('position') == 'fixed'){
+                    if ($(this).css('bottom')!='auto') {
+                        $(this).css('bottom', (parseInt($(this).css('bottom').split('px')[0])+preview_bottom_height)+'px');
+                    } else {
+                        if ($(this).css('top')!='auto') {
+                            $(this).css('top', (parseInt($(this).css('top').split('px')[0])+preview_top_height)+'px');
+                        }
+                    }
+                }
+            });
+            $('#preview-header').css('bottom', 'auto').css('top', '0px');
+            $('#preview-submit-row').css('bottom', '0px').css('top', 'auto');
+
+
+        });
+
+
+
+    </script>
+{% endif %}

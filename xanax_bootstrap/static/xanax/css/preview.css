@@ -1,0 +1,58 @@
+#preview-submit-row {
+    padding: 0;
+    text-align: right;
+    border: 1px solid #ccc;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    position: fixed;
+    bottom: 0px;
+    max-height: 40px;
+    z-index: 100000;
+}
+
+#preview-header {
+    background: #417690;
+    color: #ffc;
+    overflow: hidden;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 100000;
+}
+
+#preview-header .container {
+   margin: 0 0 0 3%;
+   width: 100%;
+}
+
+.preview-link {
+    margin: 5px 25px 5px 15px;
+}
+
+.preview-link.btn-inverse {
+    float: left;
+}
+
+.preview-link.btn-danger {
+    float: left;
+}
+
+.admin-home:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+#preview-header .container a.admin-home {
+    color: #ffffff;
+    float: left;
+}
+
+ span.prev-title {
+    margin: 10px;
+    width: 100%;
+    display: block;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: bolder;
+
+}
